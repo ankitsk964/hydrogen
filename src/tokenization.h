@@ -3,6 +3,7 @@
 #include <string>
 using namespace std;
 
+//Tokens
 enum class TokenType
 {
     exit,
