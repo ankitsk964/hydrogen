@@ -1,1 +1,4 @@
-CMakeLists.txt not found in D:\Dev\hydrogen Select CMakeLists.txt
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -S /mnt/d/Dev/hydrogen -B /mnt/d/Dev/hydrogen/cmake-build-debug-wsl
+-- Configuring done (0.1s)
+-- Generating done (0.2s)
+-- Build files have been written to: /mnt/d/Dev/hydrogen/cmake-build-debug-wsl

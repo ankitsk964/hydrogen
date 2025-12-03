@@ -42,12 +42,12 @@ class Tokenizer
         {
             vector<Token> tokens;
             string buf;
-            while (peek().has_value())
+            while (peak().has_value())
             {
-                if (isalpha(peek().value()))
+                if (isalpha(peak().value()))
                 {
                     buf.push_back(consume());
-                    while (peek().has_value() && isalnum(peek().value()))
+                    while (peak().has_value() && isalnum(peak().value()))
                     {
                         buf.push_back(consume());
                     }
@@ -62,10 +62,10 @@ class Tokenizer
                         exit(EXIT_FAILURE);
                     }
                 }
-                else if (isdigit(peek().value()))
+                else if (isdigit(peak().value()))
                 {
                     buf.push_back(consume());
-                    while (peek().has_value() && isdigit(peek().value()))
+                    while (peak().has_value() && isdigit(peak().value()))
                     {
                         buf.push_back(consume());
                     }
@@ -73,12 +73,12 @@ class Tokenizer
                     buf.clear();
                     continue;
                 }
-                else if (iswspace(peek().value()))
+                else if (iswspace(peak().value()))
                 {
                     consume();
                     continue;
                 }
-                else if (peek().value() == ';')
+                else if (peak().value() == ';')
                 {
                     tokens.push_back({.type = TokenType::semi});
                     consume();
@@ -96,7 +96,7 @@ class Tokenizer
 
         }
     private:
-        [[nodiscard]]optional<char> peek(int ahead = 0) const
+        [[nodiscard]] inline optional<char> peak(int ahead = 0) const
         {
             if (m_index + ahead >= m_src.length())
             {
@@ -108,10 +108,10 @@ class Tokenizer
             }
 
         }
-        char consume()
+        inline char consume()
         {
             return m_src.at(m_index++);
         }
         const string m_src;
-        int m_index;
+        size_t m_index = 0;
 };
