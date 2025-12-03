@@ -48,12 +48,12 @@
     &quot;assignee&quot;: &quot;ankitsk964&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ankitsk964/hydrogen",
-    "accountId": "29e1f0dd-81ea-4ff1-87d1-ffaf154cb648"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ankitsk964/hydrogen&quot;,
+    &quot;accountId&quot;: &quot;29e1f0dd-81ea-4ff1-87d1-ffaf154cb648&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
     <option name="majorVersion" value="2025" />
@@ -80,7 +80,7 @@
     "RunOnceActivity.west.config.association.type.startup.service": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "D:/Dev/hydrogen",
     "node.js.detected.package.eslint": "true",
@@ -128,6 +128,7 @@
       <workItem from="1764568979437" duration="386000" />
       <workItem from="1764773364561" duration="273000" />
       <workItem from="1764773663084" duration="506000" />
+      <workItem from="1764774195140" duration="491000" />
     </task>
     <task id="LOCAL-00001" summary="Implemented return keyword">
       <option name="closed" value="true" />
@@ -157,17 +158,37 @@
     <isAutomaticReloadCMake value="true" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
             <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="HEAD" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>
