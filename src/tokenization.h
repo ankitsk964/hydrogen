@@ -9,16 +9,9 @@ enum class TokenType
     exit,
     int_lit,
     semi,
-    add,
-    sub,
-    mul,
-    div,
-    mod,
-    equal,
-    pr_inc,
-    pr_dec,
-    po_inc,
-    po_dec,
+    open_paren,
+    close_paren,
+    ident,
 
 };
 
@@ -56,10 +49,13 @@ class Tokenizer
                         tokens.push_back({.type = TokenType::exit});
                         buf.clear();
                         continue;
-                    } else
+                    }
+
+                    else
                     {
-                        cerr << "error: unexpected token type" << endl;
-                        exit(EXIT_FAILURE);
+                        tokens.push_back({.type = TokenType::ident, .value = buf});
+                        buf.clear();
+                        continue;
                     }
                 }
                 else if (isdigit(peak().value()))
@@ -76,6 +72,18 @@ class Tokenizer
                 else if (iswspace(peak().value()))
                 {
                     consume();
+                    continue;
+                }
+                else if (peak().value() == '(')
+                {
+                    consume();
+                    tokens.push_back({.type = TokenType::open_paren, .value = buf});
+                    continue;
+                }
+                else if (peak().value() == ')')
+                {
+                    consume();
+                    tokens.push_back({.type = TokenType::close_paren, .value = buf});
                     continue;
                 }
                 else if (peak().value() == ';')
@@ -96,15 +104,15 @@ class Tokenizer
 
         }
     private:
-        [[nodiscard]] inline optional<char> peak(int ahead = 0) const
+        [[nodiscard]] inline optional<char> peak(int offset = 0) const
         {
-            if (m_index + ahead >= m_src.length())
+            if (m_index + offset >= m_src.length())
             {
                 return {};
             }
             else
             {
-                return m_src.at(m_index + ahead);
+                return m_src.at(m_index + offset);
             }
 
         }

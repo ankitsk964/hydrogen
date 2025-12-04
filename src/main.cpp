@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     vector<Token> tokens = tokenizer.tokenize();
 
     Parser parser(move(tokens));
-    optional<node::NodeExit>tree = parser.parse();
+    optional<NodeExit>tree = parser.parse();
     if (!tree.has_value())
     {
         cerr << "Failed to parse tree" << endl;

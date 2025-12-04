@@ -1,19 +1,46 @@
 #pragma once
 
+#include <variant>
+
 #include "tokenization.h"
 using namespace std;
 
-namespace node
+struct NodeExprIntLit
 {
-    struct NodeExpr
-    {
-        Token int_lit;
-    };
-    struct NodeExit
-    {
-        NodeExpr expr;
-    };
-}
+    Token int_lit;
+};
+struct NodeExprIdent
+{
+    Token ident;
+};
+
+struct NodeExpr
+{
+    variant<NodeExprIntLit, NodeExprIdent> var;
+};
+
+struct NodeStmtExit
+{
+    NodeExpr expr;
+};
+struct NodeStmtLet
+{
+    Token ident;
+    NodeExpr expr;
+};
+struct NodeStmt
+{
+    variant<NodeStmtExit, NodeStmtLet> var;
+};
+struct NodeProg
+{
+    vector<NodeStmt> stmts;
+};
+struct NodeExit
+{
+    NodeExpr expr;
+};
+
 class Parser
 {
     public:
@@ -23,32 +50,93 @@ class Parser
 
     }
 
-    optional<node::NodeExpr> parse_expr()
-    {
-        if (peak().has_value() && peak().value().type == TokenType::int_lit)
+        optional<NodeExpr> parse_expr()
         {
-            return node::NodeExpr{.int_lit = consume()};
+            if (peak().has_value() && peak().value().type == TokenType::int_lit)
+            {
+
+                return NodeExpr{.var = NodeExprIntLit{.int_lit = consume()}};
+            }
+            else if (peak().has_value() && peak().value().type == TokenType::ident)
+            {
+                return NodeExpr{.var = NodeExprIdent {.ident = consume()}};
+            }
+            else
+            {
+                return {};
+            }
         }
-        else
-        {
-            return {};
-        }
-    }
-    optional<node::NodeExit> parse()
+
+    // optional<NodeStmt> parse_stmt()
+    // {
+    //     if (peak().value().type == TokenType::exit && peak(1).has_value() && peak(1).value().type == TokenType::open_paren)
+    //     {
+    //         consume();
+    //         consume();
+    //         NodeStmtExit stmt_exit;
+    //         if (auto node_expr = parse_expr())
+    //         {
+    //             stmt_exit = {.expr = node_expr.value()};
+    //         }
+    //         if (auto node_expr = parse_expr())
+    //         {
+    //             exit_node = NodeExit{.expr = node_expr.value()};
+    //         }
+    //         else
+    //         {
+    //             cerr << "Error parsing expression" << endl;
+    //             exit(EXIT_FAILURE);
+    //         }
+    //         if (peak().has_value() && peak().value().type == TokenType::close_paren)
+    //         {
+    //             consume();
+    //
+    //         }
+    //         else
+    //         {
+    //             cerr << "Expected ')'" << endl;
+    //             exit(EXIT_FAILURE);
+    //         }
+    //         if (peak().has_value() && peak().value().type == TokenType::semi)
+    //         {
+    //             consume();
+    //         }
+    //         else
+    //         {
+    //             cerr << "Expected Semicolon" << endl;
+    //             exit(EXIT_FAILURE);
+    //         }
+    //         return NodeStmt {.var = stmt_exit};
+    //     }
+    //
+    // }
+
+    optional<NodeExit> parse()
     {
-        optional<node::NodeExit> exit_node;
+        optional<NodeExit> exit_node;
         while (peak().has_value())
         {
-            if (peak().value().type == TokenType::exit)
+            if (peak().value().type == TokenType::exit && peak(1).has_value() && peak(1).value().type == TokenType::open_paren)
             {
+                consume();
                 consume();
                 if (auto node_expr = parse_expr())
                 {
-                    exit_node = node::NodeExit{.expr = node_expr.value()};
+                    exit_node = NodeExit{.expr = node_expr.value()};
                 }
                 else
                 {
                     cerr << "Error parsing expression" << endl;
+                    exit(EXIT_FAILURE);
+                }
+                if (peak().has_value() && peak().value().type == TokenType::close_paren)
+                {
+                    consume();
+
+                }
+                else
+                {
+                    cerr << "Expected ')'" << endl;
                     exit(EXIT_FAILURE);
                 }
                 if (peak().has_value() && peak().value().type == TokenType::semi)
@@ -57,7 +145,7 @@ class Parser
                 }
                 else
                 {
-                    cerr << "Error parsing expression" << endl;
+                    cerr << "Expected Semicolon" << endl;
                     exit(EXIT_FAILURE);
                 }
             }
@@ -67,15 +155,15 @@ class Parser
     }
 
     private:
-    [[nodiscard]] inline optional<Token> peak(int ahead = 0) const
+    [[nodiscard]] inline optional<Token> peak(int offset = 0) const
     {
-        if (m_index + ahead >= m_tokens.size())
+        if (m_index + offset >= m_tokens.size())
         {
             return {};
         }
         else
         {
-            return m_tokens.at(m_index + ahead);
+            return m_tokens.at(m_index + offset);
         }
 
     }
